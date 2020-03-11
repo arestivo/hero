@@ -3,8 +3,8 @@ package com.aor.hero.arena;
 public abstract class Element {
     private Position position;
 
-    public Element(Position position) {
-        this.position = position;
+    public Element(int x, int y) {
+        this.position = new Position(x, y);
     }
 
     public Position getPosition() {

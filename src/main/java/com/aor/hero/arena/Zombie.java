@@ -3,8 +3,8 @@ package com.aor.hero.arena;
 import java.util.Random;
 
 public class Zombie extends Enemy {
-    public Zombie(Position position, int power) {
-        super(position, power);
+    public Zombie(int x, int y) {
+        super(x, y, 2);
     }
 
     @Override

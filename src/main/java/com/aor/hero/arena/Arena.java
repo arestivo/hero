@@ -4,16 +4,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Arena {
+    private int width;
+    private int height;
+
     private Hero hero;
     private List<Enemy> enemies;
     private List<Wall> walls;
     private List<Coin> coins;
 
-    public Arena(Hero hero) {
+    public Arena(Hero hero, int width, int height) {
+        this.width = width;
+        this.height = height;
+
         this.hero = hero;
+
         this.enemies = new ArrayList<>();
         this.walls = new ArrayList<>();
         this.coins = new ArrayList<>();
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 
     public void addElement(Element element) {
@@ -55,13 +70,19 @@ public class Arena {
     }
 
     private boolean canMove(Position position) {
+        if (position.getX() < 0 || position.getX() >= width) return false;
+        if (position.getY() < 0 || position.getY() >= height) return false;
+
         Wall wall = (Wall) getCollidingElement(position, walls);
         return wall == null;
     }
 
     private void checkCollisions(Position position) {
         Enemy enemy = (Enemy) getCollidingElement(position, enemies);
-        if (enemy != null) hero.decreaseHealth(enemy.getPower());
+        if (enemy != null) {
+            hero.increaseScore(-enemy.getPower());
+            hero.decreaseHealth(enemy.getPower());
+        }
 
         Coin coin = (Coin) getCollidingElement(position, coins);
         if (coin != null) {
@@ -82,20 +103,22 @@ public class Arena {
         return hero.isDead() || coins.size() == 0;
     }
 
-    public Hero getHero() {
-        return hero;
+    public List<Element> getAllElements() {
+        List<Element> elements = new ArrayList<>();
+
+        elements.add(hero);
+        elements.addAll(coins);
+        elements.addAll(walls);
+        elements.addAll(enemies);
+
+        return elements;
     }
 
-    public List<Enemy> getEnemies() {
-        return enemies;
+    public int getScore() {
+        return hero.getScore();
     }
 
-    public List<Wall> getWalls() {
-        return walls;
+    public int getHeroHealth() {
+        return hero.getHealth();
     }
-
-    public List<Coin> getCoins() {
-        return coins;
-    }
-
 }

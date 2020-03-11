@@ -4,8 +4,8 @@ public class Hero extends Element{
     private int health;
     private int score;
 
-    public Hero(Position position, int health) {
-        super(position);
+    public Hero(int x, int y, int health) {
+        super(x, y);
 
         this.health = health;
         this.score = 0;
@@ -25,5 +25,9 @@ public class Hero extends Element{
 
     public int getScore() {
         return score;
+    }
+
+    public int getHealth() {
+        return health;
     }
 }
