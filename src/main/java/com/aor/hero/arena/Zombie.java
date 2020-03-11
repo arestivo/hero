@@ -16,10 +16,10 @@ public class Zombie extends Enemy {
         int direction = random.nextInt(4);
 
         switch (direction) {
-            case 0: return new Position(x - 1, y);
-            case 1: return new Position(x + 1, y);
-            case 2: return new Position(x, y - 1);
-            case 3: return new Position(x, y + 1);
+            case 0: return getPosition().left();
+            case 1: return getPosition().right();
+            case 2: return getPosition().up();
+            case 3: return getPosition().down();
         }
 
         return getPosition();
