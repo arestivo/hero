@@ -1,17 +1,23 @@
 package com.aor.hero.arena;
 
-public abstract class Enemy extends Element {
-    private int power;
+import com.aor.hero.arena.strategies.MoveStrategy;
 
-    public Enemy(int x, int y, int power) {
+public class Enemy extends Element {
+    private int power;
+    private MoveStrategy moveStrategy;
+
+    public Enemy(int x, int y, int power, MoveStrategy moveStrategy) {
         super(x, y);
 
         this.power = power;
+        this.moveStrategy = moveStrategy;
     }
 
     public int getPower() {
         return power;
     }
 
-    public abstract Position nextMove();
+    public Position nextMove() {
+        return moveStrategy.getNextMove(getPosition());
+    }
 }

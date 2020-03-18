@@ -1,6 +1,7 @@
 package com.aor.hero.creator;
 
 import com.aor.hero.arena.*;
+import com.aor.hero.arena.strategies.ZombieMoveStrategy;
 
 import java.util.Random;
 
@@ -19,7 +20,7 @@ public class ArenaCreator {
             arena.addElement(new Coin(random.nextInt(width), random.nextInt(height), random.nextInt(10) + 1));
 
         for (int i = 0; i < enemies; i++)
-            arena.addElement(new Zombie(random.nextInt(width), random.nextInt(height)));
+            arena.addElement(new Enemy(random.nextInt(width), random.nextInt(height), 2, new ZombieMoveStrategy()));
 
         for (int i = 0; i < walls; i++)
             arena.addElement(new Wall(random.nextInt(width), random.nextInt(height)));
