@@ -12,6 +12,8 @@ public class Arena {
     private List<Wall> walls;
     private List<Coin> coins;
 
+    private boolean isFinished;
+
     public Arena(Hero hero, int width, int height) {
         this.width = width;
         this.height = height;
@@ -21,6 +23,8 @@ public class Arena {
         this.enemies = new ArrayList<>();
         this.walls = new ArrayList<>();
         this.coins = new ArrayList<>();
+
+        this.isFinished = false;
     }
 
     public int getWidth() {
@@ -38,26 +42,7 @@ public class Arena {
         if (element instanceof Coin) coins.add((Coin) element);
     }
 
-    public void moveHeroLeft() {
-        Position position = hero.getPosition().left();
-        if (canMove(position)) hero.setPosition(position);
-        checkCollisions(hero.getPosition());
-    }
-
-    public void moveHeroRight() {
-        Position position = hero.getPosition().right();
-        if (canMove(position)) hero.setPosition(position);
-        checkCollisions(hero.getPosition());
-    }
-
-    public void moveHeroUp() {
-        Position position = hero.getPosition().up();
-        if (canMove(position)) hero.setPosition(position);
-        checkCollisions(hero.getPosition());
-    }
-
-    public void moveHeroDown() {
-        Position position = hero.getPosition().down();
+    public void moveHeroTo(Position position) {
         if (canMove(position)) hero.setPosition(position);
         checkCollisions(hero.getPosition());
     }
@@ -100,7 +85,7 @@ public class Arena {
     }
 
     public boolean isFinished() {
-        return hero.isDead() || coins.size() == 0;
+        return hero.isDead() || coins.size() == 0 || isFinished;
     }
 
     public List<Element> getAllElements() {
@@ -120,5 +105,13 @@ public class Arena {
 
     public int getHeroHealth() {
         return hero.getHealth();
+    }
+
+    public Position getHeroPosition() {
+        return hero.getPosition();
+    }
+
+    public void finish() {
+        this.isFinished = true;
     }
 }

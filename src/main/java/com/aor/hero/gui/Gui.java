@@ -1,6 +1,7 @@
 package com.aor.hero.gui;
 
 import com.aor.hero.arena.*;
+import com.aor.hero.commands.*;
 import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextCharacter;
@@ -17,8 +18,6 @@ import java.io.IOException;
 public class Gui {
     private final Arena arena;
     private final TerminalScreen screen;
-
-    public enum MOVE {UP, DOWN, LEFT, RIGHT, QUIT, EOF, NONE}
 
     public Gui(Arena arena) throws IOException {
         TerminalSize terminalSize = new TerminalSize(arena.getWidth(), arena.getHeight() + 1);
@@ -75,17 +74,17 @@ public class Gui {
         graphics.putString(position.getX(), position.getY(), character);
     }
 
-    public MOVE getNextMovement() throws IOException {
+    public Command getNextCommand() throws IOException {
         KeyStroke input = screen.readInput();
 
-        if (input.getKeyType() == KeyType.EOF) return MOVE.EOF;
-        if (input.getKeyType() == KeyType.Character && input.getCharacter() == 'q') return MOVE.QUIT;
-        if (input.getKeyType() == KeyType.ArrowDown) return MOVE.DOWN;
-        if (input.getKeyType() == KeyType.ArrowUp) return MOVE.UP;
-        if (input.getKeyType() == KeyType.ArrowLeft) return MOVE.LEFT;
-        if (input.getKeyType() == KeyType.ArrowRight) return MOVE.RIGHT;
+        if (input.getKeyType() == KeyType.EOF) return new QuitCommand(arena, screen);
+        if (input.getKeyType() == KeyType.Character && input.getCharacter() == 'q') return new QuitCommand(arena, screen);
+        if (input.getKeyType() == KeyType.ArrowDown) return new MoveHeroDownCommand(arena);
+        if (input.getKeyType() == KeyType.ArrowUp) return new MoveHeroUpCommand(arena);
+        if (input.getKeyType() == KeyType.ArrowLeft) return new MoveHeroLeftCommand(arena);
+        if (input.getKeyType() == KeyType.ArrowRight) return new MoveHeroRightCommand(arena);
 
-        return MOVE.NONE;
+        return new DoNothingCommand();
     }
 
     public void close() throws IOException {

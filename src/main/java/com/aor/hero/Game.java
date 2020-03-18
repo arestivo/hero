@@ -1,6 +1,7 @@
 package com.aor.hero;
 
 import com.aor.hero.arena.*;
+import com.aor.hero.commands.Command;
 import com.aor.hero.gui.Gui;
 import com.aor.hero.creator.ArenaCreator;
 
@@ -16,17 +17,8 @@ public class Game {
         while (!arena.isFinished()) {
             gui.draw();
 
-            Gui.MOVE movement = gui.getNextMovement();
-
-            if (movement == Gui.MOVE.DOWN) arena.moveHeroDown();
-            if (movement == Gui.MOVE.UP) arena.moveHeroUp();
-            if (movement == Gui.MOVE.LEFT) arena.moveHeroLeft();
-            if (movement == Gui.MOVE.RIGHT) arena.moveHeroRight();
-
-            if (movement == Gui.MOVE.QUIT) gui.close();
-            if (movement == Gui.MOVE.EOF) break;
-
-            arena.step();
+            Command command = gui.getNextCommand();
+            command.execute();
         }
 
         gui.draw();
