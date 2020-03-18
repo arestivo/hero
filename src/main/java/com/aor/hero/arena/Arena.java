@@ -14,6 +14,8 @@ public class Arena {
 
     private boolean isFinished;
 
+    private List<ArenaObserver> observers;
+
     public Arena(Hero hero, int width, int height) {
         this.width = width;
         this.height = height;
@@ -25,6 +27,8 @@ public class Arena {
         this.coins = new ArrayList<>();
 
         this.isFinished = false;
+
+        this.observers = new ArrayList<>();
     }
 
     public int getWidth() {
@@ -40,11 +44,15 @@ public class Arena {
         if (element instanceof Enemy) enemies.add((Enemy) element);
         if (element instanceof Wall) walls.add((Wall) element);
         if (element instanceof Coin) coins.add((Coin) element);
+
+        this.notifyObservers();
     }
 
     public void moveHeroTo(Position position) {
         if (canMove(position)) hero.setPosition(position);
         checkCollisions(hero.getPosition());
+
+        this.notifyObservers();
     }
 
     public void step() {
@@ -52,6 +60,8 @@ public class Arena {
             Position position = enemy.nextMove();
             if (canMove(position)) enemy.setPosition(position);
         }
+
+        this.notifyObservers();
     }
 
     private boolean canMove(Position position) {
@@ -113,5 +123,15 @@ public class Arena {
 
     public void finish() {
         this.isFinished = true;
+    }
+
+    public void addObserver(ArenaObserver observer) {
+        observers.add(observer);
+    }
+
+    public void notifyObservers() {
+        for (ArenaObserver observer : observers) {
+            observer.arenaChanged();
+        }
     }
 }
