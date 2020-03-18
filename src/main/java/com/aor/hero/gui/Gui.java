@@ -86,8 +86,4 @@ public class Gui {
 
         return new DoNothingCommand();
     }
-
-    public void close() throws IOException {
-        screen.close();
-    }
 }

@@ -7,20 +7,34 @@ import com.aor.hero.creator.ArenaCreator;
 
 import java.io.IOException;
 
-public class Game {
-    public static void main(String[] args) throws IOException {
-        ArenaCreator creator = new ArenaCreator();
-        Arena arena = creator.createArena(50, 25, 10, 20, 50);
+public class Game implements ArenaObserver {
+    private Arena arena;
+    private Gui gui;
 
-        Gui gui = new Gui(arena);
+    public static void main(String[] args) throws IOException {
+        new Game().start();
+    }
+
+    private void start() throws IOException {
+        ArenaCreator creator = new ArenaCreator();
+        arena = creator.createArena(50, 25, 10, 20, 50);
+        arena.addObserver(this);
+
+        gui = new Gui(arena);
+        gui.draw();
 
         while (!arena.isFinished()) {
-            gui.draw();
-
             Command command = gui.getNextCommand();
             command.execute();
         }
+    }
 
-        gui.draw();
+    @Override
+    public void arenaChanged() {
+        try {
+            gui.draw();
+        } catch (IOException e) {
+            // Nothing to do if drawing fails
+        }
     }
 }
