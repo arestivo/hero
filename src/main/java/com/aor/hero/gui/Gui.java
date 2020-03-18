@@ -61,7 +61,7 @@ public class Gui {
 
     private void drawElement(Element element) {
         if (element instanceof Hero) drawCharacter(element.getPosition(), "H", "#FFFFFF");
-        if (element instanceof Zombie) drawCharacter(element.getPosition(), "Z", "#FF0000");
+        if (element instanceof Enemy) drawCharacter(element.getPosition(), "E", "#FF0000");
         if (element instanceof Wall) drawCharacter(element.getPosition(), "#", "#FFFFFF");
         if (element instanceof Coin) drawCharacter(element.getPosition(), "O", "#FFFF00");
     }
